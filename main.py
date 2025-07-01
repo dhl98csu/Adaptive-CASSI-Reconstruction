@@ -5,7 +5,7 @@ from intitt import *
 from torch.optim.lr_scheduler import StepLR, CosineAnnealingLR
 import scipy.io as sio
 from torch.utils.data import Dataset, DataLoader
-from PhysicalModels.SDCASSI3 import generate_masks, gen_meas_torch, shift
+from PhysicalModels.SDCASSI2 import generate_masks, gen_meas_torch, shift
 
 from PhysicalModels.loss import *
 from dataloder import read_mat_files, add_noise_and_crop_resize
