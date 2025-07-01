@@ -76,7 +76,6 @@ data_times = []
 epochs = []
 losses = []
 psnrs = []
-# 训练过程
 max_stagnant_epochs = 2000  
 max_outer_epochs = 1  
 max_data_files = 50  
