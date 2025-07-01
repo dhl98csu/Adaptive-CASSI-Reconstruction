@@ -85,28 +85,28 @@ def ssim(img1, img2, window_size=11, sigma=1.5, C1=1e-4, C2=9e-4):
 
 
 def psnr(original, compressed):
-    # 将张量转换为浮点数
+
     original = original.float()
     compressed = compressed.float()
 
-    # 计算像素值的最大可能值
+
     max_val = torch.max(original)
 
-    # 计算均方误差(MSE)
+
     mse = F.mse_loss(original, compressed)
 
-    # 计算PSNR
+
     psnr = 10 * torch.log10((max_val ** 2) / mse)
 
-    return psnr.item()  # 将张量转换为标量值并返回
+    return psnr.item()  
 
 
 def batch_psnr(original_batch, compressed_batch):
-    # 将张量转换为浮点数
+
     original_batch = original_batch.float()
     compressed_batch = compressed_batch.float()
 
-    # 计算每个图像的PSNR
+
     psnr_values = []
     for original, compressed in zip(original_batch, compressed_batch):
         max_min = torch.max(original)-torch.min(original)
@@ -114,17 +114,17 @@ def batch_psnr(original_batch, compressed_batch):
         psnr = 10 * torch.log10((max_min ** 2) / mse)
         psnr_values.append(psnr.item())
 
-    # 计算整个批次的平均PSNR
+
     avg_psnr = sum(psnr_values) / len(psnr_values)
 
     return avg_psnr
 
 def batch_psnrloss(original_batch, compressed_batch):
-    # 将张量转换为浮点数
+
     original_batch = original_batch.float()
     compressed_batch = compressed_batch.float()
 
-    # 计算每个图像的PSNR
+
     psnr_values = []
     for original, compressed in zip(original_batch, compressed_batch):
         max_val = torch.max(original)
@@ -132,7 +132,6 @@ def batch_psnrloss(original_batch, compressed_batch):
         psnr = 10 * torch.log10((max_val ** 2) / mse)
         psnr_values.append(psnr.item())
 
-    # 计算整个批次的平均PSNR
     avg_psnr = sum(psnr_values) / len(psnr_values)
     avg_psnr_loss = 100-avg_psnr
 
@@ -164,20 +163,20 @@ class PSNRLoss(nn.Module):
         super(PSNRLoss, self).__init__()
 
     def forward(self, pred, target):
-        # 计算 MSE
+
         mse = F.mse_loss(pred, target)
 
-        # 计算最大像素值
-        max_val = torch.max(target) # 对整个 batch 的 target 取最大值
 
-        # 如果 MSE 非常接近 0，则 PSNR 为无穷大
+        max_val = torch.max(target) 
+
+
         if mse == 0:
             return float('inf')
 
         # 计算 PSNR
         #psnr = 20 * torch.log10(max_val/ torch.sqrt(mse))
         psnr = 10 * torch.log10(max_val**2 / mse)
-        # PSNR 越大，损失越小，因此取负号作为损失
+
         loss = 100-psnr
         #loss = 1/psnr
 
