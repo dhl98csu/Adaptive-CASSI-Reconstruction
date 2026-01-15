@@ -150,7 +150,6 @@ for data_index in range(0, max_data_files):
                 initial_lr *= 0.5
                 for param_group in optimizer.param_groups:
                     param_group['lr'] = initial_lr
-                    # 重置调度器以应用新的初始学习率
                     scheduler = create_scheduler(optimizer, T_max, eta_min=0.000001)
 
 
@@ -238,3 +237,4 @@ print(f'Average Best SSIM: {avg_best_ssim}')
 print('Training finished.')
 
 print('Training finished.')
+
